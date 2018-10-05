@@ -1,10 +1,8 @@
 
-<center>
-<h1 style="text-align:center; font-size: 100px; margin-top: 1px"><span style="color:#ff7777">KGB</span>ot</h1>
-<p style="text-align:center;">
+# KGBot
+[![Build Status](https://travis-ci.org/zacklukem/kgbot.svg?branch=master)](https://travis-ci.org/zacklukem/kgbot)
 A discord bot working for the KGB.
-</p>
-</center>
+
 
 ## Info
 This bot is written in javascript with [Node.js](https://nodejs.org).  It uses the [Discord.js](https://discord.js.org) library to interface with the [Discord API](https://discordapp.com/developers/docs/intro).
