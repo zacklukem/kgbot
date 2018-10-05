@@ -5,6 +5,7 @@
 A discord bot working for the KGB.
 </p>
 </center>
+
 ## Info
 This bot is written in javascript with [Node.js](https://nodejs.org).  It uses the [Discord.js](https://discord.js.org) library to interface with the [Discord API](https://discordapp.com/developers/docs/intro).
 
