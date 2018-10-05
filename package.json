@@ -1,0 +1,12 @@
+{
+  "name": "kgbot",
+  "version": "1.0.0",
+  "description": "Discord bot working for the KGB",
+  "main": "bot.js",
+  "author": "Zachary Mayhew",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "winston": "^2.4.1"
+  }
+}
