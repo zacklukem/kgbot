@@ -25,6 +25,7 @@ Follow these steps to prepare to run:
 }
 ```
 `motd` is the message of the day, `activity` is the activity that is displayd under the username, and `activity_mode` toggles between watching (`true`) and playing (`false`)
+
 4. Install node dependancies by running `npm install` in your command line.
 5. Run by executing `node bot.js`
 6. Change the world with the power of the KGB!
