@@ -1,3 +1,14 @@
+/**
+ * Copyright 2018 Zachary Mayhew. This source code is governed by a MIT-style
+ * license that can be found in the LICENSE file or at
+ * https://opensource.org/licenses/MIT.
+ *
+ * Main file for the KGBot
+ *
+ * @author Zachary Mayhew <zacklukem#7074>
+ *
+ */
+
 const logger = require('winston');
 
 
