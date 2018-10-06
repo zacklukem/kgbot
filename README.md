@@ -1,6 +1,5 @@
 
 # KGBot
-[![Build Status](https://travis-ci.org/zacklukem/kgbot.svg?branch=master)](https://travis-ci.org/zacklukem/kgbot)
 A discord bot working for the KGB.
 
 
