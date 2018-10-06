@@ -13,12 +13,21 @@ Follow these steps to prepare to run:
 2. Create an `auth.json` file containing the following:
 ```json
 {
-      "token": "YOUR-TOKEN-HERE"
+  "token": "YOUR-TOKEN-HERE"
 }
 ```
-3. Install node dependancies by running `npm install` in your command line.
-4. Run by executing `node bot.js`
-5. Change the world with the power of the KGB!
+3. Create a `data.json` file containing the following:
+```json
+{
+  "motd": "Hello, Discord!",
+  "activity": "you",
+  "activity_mode": true
+}
+```
+`motd` is the message of the day, `activity` is the activity that is displayd under the username, and `activity_mode` toggles between watching (`true`) and playing (`false`)
+4. Install node dependancies by running `npm install` in your command line.
+5. Run by executing `node bot.js`
+6. Change the world with the power of the KGB!
 
 ## Usage
 ### Running

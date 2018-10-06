@@ -3,7 +3,7 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  *
- * Main file for the KGBot
+ * Commands classes for the KGBot
  *
  * @author Zachary Mayhew <zacklukem#7074>
  *

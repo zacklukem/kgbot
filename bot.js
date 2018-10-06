@@ -44,10 +44,44 @@ commands.add_command(new commands.Command(["motd", "setmotd"],
     "$motd [message] - sets the message of the day",
     (msg, args) => {
         data.motd = args.join(' ');
+
         fs.writeFile('./data.json', JSON.stringify(data), (e) => {
             if (e) return logger.error(e);
         });
         msg.reply("Changed motd to: " + args.join(' '));
+    }));
+
+commands.add_command(new commands.Command(["activity", "a"],
+    "$activity, $a [message] - sets the activity to something else",
+    (msg, args) => {
+        data.activity = args.join(' ');
+        if (data.activity_mode) {
+            bot.user.setActivity(data.activity, {type: 'WATCHING'});
+        }
+        else {
+            bot.user.setActivity(data.activity, {type: 'PLAYING'});
+
+        }
+        fs.writeFile('./data.json', JSON.stringify(data), (e) => {
+            if (e) return logger.error(e);
+        });
+        msg.reply("Changed activity to: " + args.join(' '));
+    }));
+
+commands.add_command(new commands.Command(["toggle_activity", "ta"],
+    "$toggle_activity, $ta - toggles the activity between watching and playing",
+    (msg, args) => {
+        data.activity_mode = !data.activity_mode;
+        if (data.activity_mode) {
+            bot.user.setActivity(data.activity, {type: 'WATCHING'});
+        }
+        else {
+            bot.user.setActivity(data.activity, {type: 'PLAYING'});
+
+        }
+        fs.writeFile('./data.json', JSON.stringify(data), (e) => {
+            if (e) return logger.error(e);
+        });
     }));
 
 // Handle commandline input
@@ -72,6 +106,9 @@ process.on('uncaughtException', e => {
 function exit() {
     logger.info("Goodbye!")
     bot.destroy().then(process.exit());
+    fs.writeFile('./data.json', JSON.stringify(data), (e) => {
+        if (e) return logger.error(e);
+    });
 }
 
 bot.on('ready', () => {
@@ -97,7 +134,12 @@ bot.on('message', msg => {
 });
 
 bot.login(auth.token).then(() => {
-    bot.user.setActivity('your every move...', { type: 'WATCHING' })
-        .catch(logger.error);
+    if (data.activity_mode) {
+        bot.user.setActivity(data.activity, {type: 'WATCHING'});
+    }
+    else {
+        bot.user.setActivity(data.activity, {type: 'PLAYING'});
+
+    }
 });
 
