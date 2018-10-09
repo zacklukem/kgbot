@@ -11,10 +11,10 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const logger = require('winston');
-const auth = require('./auth.json');
+const auth = require('../auth.json');
 const readline = require('readline');
 const commands = require('./commands.js');
-const data = require('./data.json');
+const data = require('../data.json');
 
 const use_strict_exit = true;  // For release set to false
 

@@ -27,14 +27,14 @@ Follow these steps to prepare to run:
 `motd` is the message of the day, `activity` is the activity that is displayd under the username, and `activity_mode` toggles between watching (`true`) and playing (`false`)
 
 4. Install node dependancies by running `npm install` in your command line.
-5. Run by executing `node bot.js`
+5. Run by executing `npm start`
 6. Change the world with the power of the KGB!
 
 ## Usage
 ### Running
 Follow these steps to add your bot to your server:
 1. Go to this link (replace the client id in the link with your own): `https://discordapp.com/oauth2/authorize?&client_id=YOUR_CLIENT_ID_HERE&scope=bot&permissions=0`
-2. Run using `node bot.js`
+2. Run using `npm start`
 
 ### Using
 Send the message `$help` for help
