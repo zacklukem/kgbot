@@ -37,9 +37,16 @@ Follow these steps to add your bot to your server:
 1. Go to this link (replace the client id in the link with your own): `https://discordapp.com/oauth2/authorize?&client_id=YOUR_CLIENT_ID_HERE&scope=bot&permissions=0`
 2. Run using `npm start`
 
-### Using
-Send the message `$help` for help
-you can also use `$ping` to get a message of the day and use `$motd [message]` to set the motd.
+### List of commands:
+| Command         | Alias   | Arguments       | Description                                                    |
+|-----------------|---------|-----------------|----------------------------------------------------------------|
+| $ping            | $p       |                 | gives the user the message of the day                          |
+| $motd            | $setmotd | \<message>       | Sets the message of the day                                    |
+| $activity        | $a       | \<activity>      | Sets the activity                                              |
+| $toggle_activity | $ta      |                 | Toggles the activity between Watching and Playing              |
+| $cash-init       |          |                 | Initializes the bank account of the user who sends the message |
+| $balance         | $bal     | \[user]          | Gets the balance of a user or the user who sends the message   |
+| $send            |          | \<user> \<amount> | Sends the specified user the specified amount.                 |
 
 ## Configuration
 The bot can be configured using the settings.json file.  The basic structure is as follows:
