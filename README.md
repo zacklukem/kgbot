@@ -21,10 +21,11 @@ Follow these steps to prepare to run:
 {
   "motd": "Hello, Discord!",
   "activity": "you",
-  "activity_mode": true
+  "activity_mode": true,
+  "cash": {}
 }
 ```
-`motd` is the message of the day, `activity` is the activity that is displayd under the username, and `activity_mode` toggles between watching (`true`) and playing (`false`)
+`motd` is the message of the day, `activity` is the activity that is displayd under the username, and `activity_mode` toggles between watching (`true`) and playing (`false`).  `cash` is a dictionary that stores data on user balances
 
 4. Install node dependancies by running `npm install` in your command line.
 5. Run by executing `npm start`

@@ -16,7 +16,23 @@ const readline = require('readline');
 const commands = require('./commands.js');
 const data = require('../data.json');
 
-const use_strict_exit = true;  // For release set to false
+// Settings
+// Defaults
+let settings = {
+    "use_strict": false,
+    "initial_balance": 10000,
+    "use_balance": true,
+    "use_motd": true,
+    "c_sym": "₽"
+};
+try {
+    fs.accessSync('./settings.json', fs.constants.R_OK);
+    logger.debug("using settings");
+    settings = require('../settings.json');
+} catch (err) {
+    logger.debug("not using settings");
+}
+
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -34,37 +50,44 @@ const rl = readline.createInterface({
 
 const bot = new Discord.Client();
 
-commands.add_command(new commands.Command(["ping", "p"], "$ping, $p - gives the user a " +
-    "message of the day! (mostly used for testing)",
-    (msg, args) => {
-        msg.reply(data.motd);
-    }));
+function update_activity() {
+    if (data.activity_mode) {
+        bot.user.setActivity(data.activity, {type: 'WATCHING'});
+    }
+    else {
+        bot.user.setActivity(data.activity, {type: 'PLAYING'});
+    }
+}
 
-commands.add_command(new commands.Command(["motd", "setmotd"],
-    "$motd [message] - sets the message of the day",
-    (msg, args) => {
-        data.motd = args.join(' ');
+function update_datafile() {
+    fs.writeFile('./data.json', JSON.stringify(data, null, 2), (e) => {
+        if (e) return logger.error(e);
+    });
+}
 
-        fs.writeFile('./data.json', JSON.stringify(data), (e) => {
-            if (e) return logger.error(e);
-        });
-        msg.reply("Changed motd to: " + args.join(' '));
-    }));
+// Commands
+if (settings.use_motd) {
+    commands.add_command(new commands.Command(["ping", "p"], "$ping, $p - gives the user a " +
+        "message of the day! (mostly used for testing)",
+        (msg, args) => {
+            msg.reply(data.motd);
+        }));
+
+    commands.add_command(new commands.Command(["motd", "setmotd"],
+        "$motd [message] - sets the message of the day",
+        (msg, args) => {
+            data.motd = args.join(' ');
+            update_datafile();
+            msg.reply("Changed motd to: " + args.join(' '));
+        }));
+}
 
 commands.add_command(new commands.Command(["activity", "a"],
     "$activity, $a [message] - sets the activity to something else",
     (msg, args) => {
         data.activity = args.join(' ');
-        if (data.activity_mode) {
-            bot.user.setActivity(data.activity, {type: 'WATCHING'});
-        }
-        else {
-            bot.user.setActivity(data.activity, {type: 'PLAYING'});
-
-        }
-        fs.writeFile('./data.json', JSON.stringify(data), (e) => {
-            if (e) return logger.error(e);
-        });
+        update_activity();
+        update_datafile();
         msg.reply("Changed activity to: " + args.join(' '));
     }));
 
@@ -72,17 +95,51 @@ commands.add_command(new commands.Command(["toggle_activity", "ta"],
     "$toggle_activity, $ta - toggles the activity between watching and playing",
     (msg, args) => {
         data.activity_mode = !data.activity_mode;
-        if (data.activity_mode) {
-            bot.user.setActivity(data.activity, {type: 'WATCHING'});
-        }
-        else {
-            bot.user.setActivity(data.activity, {type: 'PLAYING'});
-
-        }
-        fs.writeFile('./data.json', JSON.stringify(data), (e) => {
-            if (e) return logger.error(e);
-        });
+        update_activity();
+        update_datafile();
     }));
+
+if (settings.use_balance) {
+    commands.add_command(new commands.Command(["cash-init"],
+        "$cash-init - initializes your users balance.  Can only be run once.",
+        (msg, args) => {
+            if (!data.cash.hasOwnProperty(msg.author.username)) {
+                data.cash[msg.author.username] = settings.initial_balance;
+                update_datafile();
+                msg.reply("Your balance has been set to: " + settings.c_sym + settings.initial_balance)
+            } else {
+                msg.reply("Your account is already initialized!  For more help type $help")
+            }
+        }));
+
+    commands.add_command(new commands.Command(["balance", "bal"],
+        "$balance, $bal - tells you what you balance is",
+        (msg, args) => {
+            if (data.cash.hasOwnProperty(args[0])) {
+                msg.reply(args[0] + "'s balance is: " + settings.c_sym + data.cash[args[0]]);
+            }
+            if (data.cash.hasOwnProperty(msg.author.username)) {
+                msg.reply("Your balance is: " + settings.c_sym + data.cash[msg.author.username]);
+            } else {
+                msg.reply("You haven't been initialized yet! type $cash-init to initialize.");
+            }
+        }));
+
+    commands.add_command(new commands.Command(["send"],
+        "$send [user] [amount] - sends money to the specified user",
+        (msg, args) => {
+            if (data.cash.hasOwnProperty(args[0]) && data.cash.hasOwnProperty(msg.author.username)) {
+                data.cash[args[0]] += parseInt(args[1]);
+                data.cash[msg.author.username] -= parseInt(args[1]);
+                update_datafile();
+                msg.reply("Sent " + args[0] + " " + settings.c_sym + args[1]);
+            } else if (!data.cash.hasOwnProperty(msg.author.username)) {
+                msg.reply("You haven't been initialized yet! type $cash-init to initialize.");
+            } else {
+                msg.reply(args[0] + " hasn't been initialized yet! Tell them to $cash-init to initialize.");
+            }
+        }));
+}
 
 // Handle commandline input
 rl.on('line', (input) => {
@@ -96,9 +153,10 @@ rl.on('line', (input) => {
     }
 });
 
+// Handle exceptions
 process.on('uncaughtException', e => {
     logger.error(e.stack);
-    if (use_strict_exit) {
+    if (settings.use_strict) {
         exit();
     }
 });
@@ -106,11 +164,10 @@ process.on('uncaughtException', e => {
 function exit() {
     logger.info("Goodbye!");
     bot.destroy().then(process.exit());
-    fs.writeFile('./data.json', JSON.stringify(data), (e) => {
-        if (e) return logger.error(e);
-    });
+    update_datafile();
 }
 
+// Bot login and handling
 bot.on('ready', () => {
     logger.info('Connected');
     logger.info('Logged in as: ');
@@ -134,12 +191,6 @@ bot.on('message', msg => {
 });
 
 bot.login(auth.token).then(() => {
-    if (data.activity_mode) {
-        bot.user.setActivity(data.activity, {type: 'WATCHING'});
-    }
-    else {
-        bot.user.setActivity(data.activity, {type: 'PLAYING'});
-
-    }
+    update_activity();
 });
 

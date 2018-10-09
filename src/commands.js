@@ -73,7 +73,6 @@ module.exports = {
 
         for (let i = 0; i < commands.length; i++) {
             let command = commands[i];
-            logger.debug(command);
             if (command.is_called(cmd)) {
                 logger.debug("Called: " + cmd);
                 command.callback(msg, args);
