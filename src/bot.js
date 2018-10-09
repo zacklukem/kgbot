@@ -115,8 +115,9 @@ if (settings.use_balance) {
     commands.add_command(new commands.Command(["balance", "bal"],
         "$balance, $bal - tells you what you balance is",
         (msg, args) => {
-            if (data.cash.hasOwnProperty(args[0])) {
-                msg.reply(args[0] + "'s balance is: " + settings.c_sym + data.cash[args[0]]);
+            if (msg.mentions.users.first() && data.cash.hasOwnProperty(msg.mentions.users.first().username)) {
+                msg.reply(msg.mentions.users.first().username + "'s balance is: " +
+                    settings.c_sym + data.cash[msg.mentions.users.first().username]);
             }
             if (data.cash.hasOwnProperty(msg.author.username)) {
                 msg.reply("Your balance is: " + settings.c_sym + data.cash[msg.author.username]);
@@ -128,15 +129,16 @@ if (settings.use_balance) {
     commands.add_command(new commands.Command(["send"],
         "$send [user] [amount] - sends money to the specified user",
         (msg, args) => {
-            if (data.cash.hasOwnProperty(args[0]) && data.cash.hasOwnProperty(msg.author.username)) {
-                data.cash[args[0]] += parseInt(args[1]);
+            if (msg.mentions.users.first() && data.cash.hasOwnProperty(msg.mentions.users.first().username) &&
+                data.cash.hasOwnProperty(msg.author.username)) {
+                data.cash[msg.mentions.users.first().username] += parseInt(args[1]);
                 data.cash[msg.author.username] -= parseInt(args[1]);
                 update_datafile();
-                msg.reply("Sent " + args[0] + " " + settings.c_sym + args[1]);
+                msg.reply("Sent " + msg.mentions.users.first().username + " " + settings.c_sym + args[1]);
             } else if (!data.cash.hasOwnProperty(msg.author.username)) {
                 msg.reply("You haven't been initialized yet! type $cash-init to initialize.");
             } else {
-                msg.reply(args[0] + " hasn't been initialized yet! Tell them to $cash-init to initialize.");
+                msg.reply(msg.mentions.users.first().username + " hasn't been initialized yet! Tell them to $cash-init to initialize.");
             }
         }));
 }
@@ -171,7 +173,7 @@ function exit() {
 bot.on('ready', () => {
     logger.info('Connected');
     logger.info('Logged in as: ');
-    logger.info(bot.user.tag);
+    logger.info(bot.user.username);
 });
 
 bot.on('message', msg => {
