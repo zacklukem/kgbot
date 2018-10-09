@@ -87,9 +87,9 @@ commands.add_command(new commands.Command(["toggle_activity", "ta"],
 // Handle commandline input
 rl.on('line', (input) => {
     input = input.toLowerCase();
-    if (input == 'exit') {
+    if (input === 'exit') {
         exit();
-    } else if (input == 'help' || input == 'h') {
+    } else if (input === 'help' || input === 'h') {
         logger.info("Help for discord bot:");
         logger.info("    help: Display this message");
         logger.info("    exit: Exit and logout");
@@ -104,7 +104,7 @@ process.on('uncaughtException', e => {
 });
 
 function exit() {
-    logger.info("Goodbye!")
+    logger.info("Goodbye!");
     bot.destroy().then(process.exit());
     fs.writeFile('./data.json', JSON.stringify(data), (e) => {
         if (e) return logger.error(e);
@@ -119,11 +119,11 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
     
-    var message = msg.content;
+    let message = msg.content;
 
-    if (message.substring(0, 1) == '$') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0].toLowerCase();
+    if (message.substring(0, 1) === '$') {
+        let args = message.substring(1).split(' ');
+        let cmd = args[0].toLowerCase();
         
         args = args.splice(1);
         

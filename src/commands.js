@@ -12,7 +12,7 @@
 const logger = require('winston');
 
 
-var commands = []
+let commands = [];
 
 /**
  * Class to define a command to be run by the user.
@@ -36,8 +36,8 @@ class Command {
     }
 
     is_called (cmd) {
-        for (let c in this.cmds) {
-            if (cmd == this.cmds[c]) {
+        for (let c = 0; c < this.cmds.length; c++) {
+            if (cmd === this.cmds[c]) {
                 return true;
             }
         }
@@ -46,7 +46,7 @@ class Command {
 }
 
 module.exports = {
-    
+
     Command: Command,
 
     /**
@@ -61,26 +61,26 @@ module.exports = {
     handle_command: (msg, cmd, args) => {
         logger.debug("Recieved command: " + cmd);
 
-        if (cmd == 'help' || cmd == 'h') {
-            var str = "";
-            for (var c in commands) {
-                var cmd0 = commands[c];
+        if (cmd === 'help' || cmd === 'h') {
+            let str = "";
+            for (let c in commands) {
+                let cmd0 = commands[c];
                 str = str + "\n    " + cmd0.desc;
             }
-            msg.reply("KGBot help:" + 
+            msg.reply("KGBot help:" +
                       str)
         }
 
-        for (var i = 0; i < commands.length; i++) {
-            var command = commands[i];
+        for (let i = 0; i < commands.length; i++) {
+            let command = commands[i];
             logger.debug(command);
             if (command.is_called(cmd)) {
-                logger.debug("Called: " + cmd)
+                logger.debug("Called: " + cmd);
                 command.callback(msg, args);
             }
         }
     },
-    
+
     /**
      * Adds a command.
      * @param cmd command
