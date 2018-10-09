@@ -10,6 +10,7 @@
     "winston": "^2.4.1"
   },
   "scripts": {
-    "start": "node src/bot.js"
+    "start": "node src/bot.js",
+    "install": "node setup.js"
   }
 }

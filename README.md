@@ -10,7 +10,7 @@ This bot is not meant for most people, it is mostly just a fun project, but if y
 ## Getting Ready to Run
 Follow these steps to prepare to run:
 1. Create a discord application with a user. This  [tutorial](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) is pretty good.
-2. Create an `auth.json` file containing the following:
+<!--2. Create an `auth.json` file containing the following:
 ```json
 {
   "token": "YOUR-TOKEN-HERE"
@@ -26,10 +26,10 @@ Follow these steps to prepare to run:
 }
 ```
 `motd` is the message of the day, `activity` is the activity that is displayd under the username, and `activity_mode` toggles between watching (`true`) and playing (`false`).  `cash` is a dictionary that stores data on user balances
-
-4. Install node dependancies by running `npm install` in your command line.
-5. Run by executing `npm start`
-6. Change the world with the power of the KGB!
+-->
+2. Install node dependancies by running `npm install` in your command line and follow the prompt to setup the JSON files
+3. Run by executing `npm start`
+4. Change the world with the power of the KGB!
 
 ## Usage
 ### Running
@@ -40,6 +40,22 @@ Follow these steps to add your bot to your server:
 ### Using
 Send the message `$help` for help
 you can also use `$ping` to get a message of the day and use `$motd [message]` to set the motd.
+
+## Configuration
+The bot can be configured using the settings.json file.  The basic structure is as follows:
+```json
+{
+    "use_strict": false,
+    "initial_balance": 10000,
+    "use_balance": true,
+    "use_motd": true,
+    "c_sym": "₽"
+}
+```
+When `use_strict` is set to true the program will exit upon receiving an exception
+`initial_balance` is the initial balance for the currency system if applicable.
+`use_balance` and `use_motd` define whether or not the balance and motd features are to be used.
+`c_sym` is a cryptic name meaning currency symbol that is just a unicode symbol that represents the symbol that is before all currency values.
 
 ---
 
