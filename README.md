@@ -1,5 +1,9 @@
 
 # KGBot
+![](https://img.shields.io/github/license/zacklukem/kgbot.svg)
+![](https://img.shields.io/badge/discord.js-%5E11.4.2-brightgreen.svg)
+![](https://img.shields.io/badge/KGB-KGB-ff0000.svg)
+
 A discord bot working for the KGB.
 
 
